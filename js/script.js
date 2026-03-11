@@ -4,14 +4,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* --- 1. LOADING SCREEN --- */
     const loadingScreen = document.getElementById('loading-screen');
-    
-    // Remove loading screen after 2.5 seconds
-    setTimeout(() => {
+    const loadingText = document.getElementById('loading-text');
+
+    const typeText = async (text, element, delay = 35) => {
+        element.innerHTML = '';
+        for (let i = 0; i < text.length; i++) {
+            element.innerHTML += text.charAt(i);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    };
+
+    const runLoadingSequence = async () => {
+        if (!loadingText || !loadingScreen) return;
+        
+        await typeText("Scanning neural pathways...", loadingText, 30);
+        await new Promise(resolve => setTimeout(resolve, 400));
+        loadingText.innerHTML += '<br><br>';
+        
+        const grantedSpan = document.createElement('span');
+        loadingText.appendChild(grantedSpan);
+        await typeText("Access granted.", grantedSpan, 30);
+        
+        await new Promise(resolve => setTimeout(resolve, 500));
+
         loadingScreen.style.opacity = '0';
         setTimeout(() => {
             loadingScreen.style.display = 'none';
-        }, 800); // Wait for fade out transition
-    }, 2500);
+        }, 500);
+    };
+
+    runLoadingSequence();
 
     /* --- 2. MOBILE NAVIGATION --- */
     const hamburger = document.getElementById('hamburger');
@@ -239,3 +261,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
